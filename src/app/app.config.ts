@@ -1,25 +1,29 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MyPreset } from '@shared/theme/custom-colors';
+import { tokenInterceptor } from '@core/interceptors/token-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
+    provideRouter(routes, withViewTransitions()),
     provideAnimationsAsync(),
-    provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withFetch(), withInterceptors([
+      tokenInterceptor
+    ])),
+    HttpClient,
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
           darkModeSelector: false
         }
       }
-    }),
+    })
   ]
 };
