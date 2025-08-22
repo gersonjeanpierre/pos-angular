@@ -28,7 +28,6 @@ import { AuthService } from '@core/services/auth/auth-service';
   styleUrl: './login.css',
 })
 
-
 export class Login {
   // I N J E C C I O N E S
   private router = inject(Router);

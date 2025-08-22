@@ -10,7 +10,7 @@
       </div>
     </ng-template>
     <ng-template #item let-item let-root="root">
-      <a pRipple class="flex items-center p-menubar-item-link">
+      <a pRipple class="flex items-center p-menubar-item-link" routerLink="{{ item.routerLink }}">
         <span>{{ item.label }}</span>
         @if (item.badge) {
         <p-badge class="{{ root ? 'ml-2' : 'ml-auto' }}" [value]="item.badge" />
@@ -31,7 +31,7 @@
           image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
           shape="circle"
         />
-        <p-button label="Cerrar sesión" icon="pi pi-sign-out" (click)="logoutUser()" />
+        <p-button label="Salir" icon="pi pi-sign-out" (click)="logoutUser()" />
       </div>
     </ng-template>
   </p-menubar>
