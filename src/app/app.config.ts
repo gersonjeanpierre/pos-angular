@@ -5,7 +5,7 @@ import { providePrimeNG } from 'primeng/config';
 import { HttpClient, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MyPreset } from '@shared/theme/custom-colors';
-import { tokenInterceptor } from '@core/interceptors/token-interceptor';
+import { authInterceptor } from '@core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withViewTransitions()),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([
-      tokenInterceptor
+      authInterceptor
     ])),
     HttpClient,
     providePrimeNG({
