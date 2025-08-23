@@ -1,0 +1,18 @@
+:host ::ng-deep .p-togglebutton.p-togglebutton-checked .p-togglebutton-content {
+  background-color: #09090b;
+  color: white;
+}
+
+:host ::ng-deep .p-togglebutton.p-togglebutton-checked .p-togglebutton-icon {
+  color: white;
+}
+
+:host ::ng-deep .p-togglebutton {
+  background-color: white;
+  border: none;
+  padding: 0;
+}
+
+:host ::ng-deep .p-togglebutton-content:hover {
+  background-color: oklch(0.871 0.006 286.286);
+}

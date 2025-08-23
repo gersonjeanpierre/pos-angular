@@ -1,38 +1,37 @@
-<div class="card">
-  <p-menubar [model]="items">
-    <ng-template #start>
-      <div class="laser-container">
-        <div class="laser">
-          <span>LASER</span>
-          <span class="laser-color">COLOR</span>
-          <span class="laser-veloz">VELOZ</span>
-        </div>
+<p-menubar [model]="menuItems()">
+  <ng-template #start>
+    <div class="laser-container">
+      <div class="laser">
+        <span>LASER</span>
+        <span class="laser-color">COLOR</span>
+        <span class="laser-veloz">VELOZ</span>
       </div>
-    </ng-template>
-    <ng-template #item let-item let-root="root">
-      <a pRipple class="flex items-center p-menubar-item-link" routerLink="{{ item.routerLink }}">
-        <span>{{ item.label }}</span>
-        @if (item.badge) {
-        <p-badge class="{{ root ? 'ml-2' : 'ml-auto' }}" [value]="item.badge" />
-        } @if (item.shortcut) {
-        <span
-          class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
-          >{{ item.shortcut }}</span
-        >
-        } @if (item.items) {
-        <i class="ml-auto pi {{ root ? 'pi-angle-down' : 'pi-angle-right' }}"></i>
-        }
-      </a>
-    </ng-template>
-    <ng-template #end>
+    </div>
+  </ng-template>
+  <ng-template #item let-item let-root="root">
+    @if (item.visible) {
+    <p-toggleButton
+      [onLabel]="item.label"
+      [offLabel]="item.label"
+      [onIcon]="item.icon"
+      [offIcon]="item.icon"
+      [ngModel]="router.url === item.routerLink"
+      (ngModelChange)="onMenuItemToggle(item.routerLink!)"
+    />
+    }
+  </ng-template>
+  <ng-template #end>
+    <div class="flex items-center">
+      <p-avatar
+        icon="pi pi-user"
+        class="mr-2"
+        style="background-color: #ece9fc; color: #2a1261"
+        shape="circle"
+      />
+      <span class="text-xl font-bold mr-3">{{ getUserData() }}</span>
       <div class="flex items-center gap-2">
-        <input type="text" pInputText placeholder="Search" class="w-36" />
-        <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          shape="circle"
-        />
         <p-button label="Salir" icon="pi pi-sign-out" (click)="logoutUser()" />
       </div>
-    </ng-template>
-  </p-menubar>
-</div>
+    </div>
+  </ng-template>
+</p-menubar>
