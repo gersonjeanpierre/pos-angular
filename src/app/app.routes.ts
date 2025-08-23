@@ -11,9 +11,9 @@ import { AccessDenied } from '@features/access-denied/access-denied';
 import { Sales } from '@features/sales/sales';
 import { Clients } from '@features/clients/clients';
 import { Reports } from '@features/reports/reports';
+import { Suppliers } from '@features/suppliers/suppliers';
 
 export const routes: Routes = [
-
   {
     path: '',
     redirectTo: 'login',
@@ -51,6 +51,12 @@ export const routes: Routes = [
       {
         path: 'inventario',
         component: Inventory,
+        canActivate: [roleGuard],
+        data: { roles: [UserRole.ADMIN, UserRole.MANAGER] }
+      },
+      {
+        path: 'proveedores',
+        component: Suppliers,
         canActivate: [roleGuard],
         data: { roles: [UserRole.ADMIN, UserRole.MANAGER] }
       },
