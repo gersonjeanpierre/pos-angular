@@ -54,6 +54,12 @@ export class MenuBar implements OnInit {
         visible: this.authService.hasAnyRole([UserRole.ADMIN, UserRole.MANAGER, UserRole.EMPLOYEE]),
       },
       {
+        label: 'Proveedores',
+        icon: 'pi pi-box',
+        routerLink: ['/proveedores'],
+        visible: this.authService.hasAnyRole([UserRole.ADMIN, UserRole.MANAGER]),
+      },
+      {
         label: 'Reportes',
         icon: 'pi pi-file-excel',
         routerLink: ['/reportes'],
