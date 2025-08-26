@@ -38,7 +38,6 @@ export class MenuBar implements OnInit {
   }
 
   getUserData() {
-    console.log('getUserData called', this.authService.getUserData());
     return this.authService.getUserData()?.fullName;
   }
 

@@ -34,13 +34,13 @@ export class Login {
   private authService = inject<AuthService>(AuthService);
   private galleryService = inject<GalleryService>(GalleryService);
 
-  private formBuilder = inject<FormBuilder>(FormBuilder);
+  private fb = inject<FormBuilder>(FormBuilder);
   private cdr = inject(ChangeDetectorRef)
 
   groupedGalleries: any[] = [];
   selectedStand: string | undefined;
 
-  loginForm = this.formBuilder.group({
+  loginForm = this.fb.group({
     email: [''],
     password: [''],
     standId: ['']
