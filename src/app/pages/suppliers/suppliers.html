@@ -1,8 +1,110 @@
-<div class="flex gap-8 m-4">
-  <p-card header="Lista de Proveedores">
-    <p class="m-0">Lista de Proveedores</p>
-  </p-card>
-  <p-card header="Crear Proveedor">
-    <p class="m-0">Crear Proveedor</p>
-  </p-card>
+<div class="flex flex-col justify-center m-6">
+  <h2 class="text-2xl font-bold mb-4">Gestión de Proveedores</h2>
+  <p-toast />
+  <p-toolbar class="mb-6 w-full">
+    <ng-template #start>
+      <p-button
+        size="small"
+        label="Nuevo Proveedor"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="createNewSupplier()"
+      />
+    </ng-template>
+  </p-toolbar>
+  <p-table [value]="suppliers" sortField="internalId">
+    <ng-template #header>
+      <tr>
+        <th>ID</th>
+        <th>Razón Social</th>
+        <th>RUC</th>
+        <th>Representante</th>
+        <th>Celular</th>
+        <th>Email</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-supplier>
+      <tr>
+        <td>{{ supplier.internalId }}</td>
+        <td>{{ supplier.socialReason }}</td>
+        <td>{{ supplier.ruc }}</td>
+        <td>{{ supplier.contactName }}</td>
+        <td>{{ supplier.phone }}</td>
+        <td>{{ supplier.email }}</td>
+        <td>
+          @if (supplier.isActive) {
+          <span class="text-green-600 font-bold">Sí</span>
+          } @else {
+          <span class="text-red-600 font-bold">No</span>
+          }
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="editSupplier(supplier)"
+          />
+          <!-- <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="deleteSupplier(supplier)"
+          /> -->
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog
+    [(visible)]="supplierDialog"
+    [style]="{ width: '600px' }"
+    header="Detalles del Proveedor"
+    [modal]="true"
+  >
+    <form [formGroup]="supplierForm">
+      <div class="flex flex-wrap justify-baseline gap-4">
+        <p-iftalabel>
+          <input class="w-64" pInputText id="username" formControlName="socialReason" />
+          <label for="username">Razón Social</label>
+        </p-iftalabel>
+
+        <p-iftalabel>
+          <input class="w-64" type="text" pInputText formControlName="ruc" />
+          <label for="ruc">RUC</label>
+        </p-iftalabel>
+
+        <p-iftalabel>
+          <input class="w-64" type="text" pInputText formControlName="contactName" />
+          <label for="contactName">Representante</label>
+        </p-iftalabel>
+        <p-iftalabel>
+          <input class="w-64" type="text" pInputText formControlName="phone" />
+          <label for="phone">Celular</label>
+        </p-iftalabel>
+        <p-iftalabel>
+          <input class="w-64" type="email" pInputText formControlName="email" />
+          <label for="email">Email</label>
+        </p-iftalabel>
+      </div>
+      <div class="flex flex-col mt-3">
+        <label class="mb-2"> Activo: </label>
+        <p-selectbutton
+          [options]="activeOptions"
+          formControlName="isActive"
+          optionLabel="label"
+          optionValue="value"
+          aria-labelledby="basic"
+        />
+      </div>
+    </form>
+    <ng-template #footer>
+      <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+      <p-button label="Guardar" icon="pi pi-check" (click)="saveSupplier()" />
+    </ng-template>
+  </p-dialog>
+  <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
