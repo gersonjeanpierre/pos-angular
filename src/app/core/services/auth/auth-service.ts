@@ -94,7 +94,7 @@ export class AuthService {
     try {
       return JSON.parse(user);
     } catch (error) {
-      console.error('Error parsing user data from localStorage:', error);
+      console.error('Error al obtener los datos del usuario:', error);
       this.clearAuthData();
       return null;
     }
@@ -108,7 +108,7 @@ export class AuthService {
     if (!refreshToken) {
       this.isRefreshing.next(false);
       this.logout();
-      return throwError(() => 'No refresh token available');
+      return throwError(() => 'Refresh token no disponible');
     }
 
     return this.http.post(`${ENV.API_URL}/auth/refresh-token`, { refreshToken })
@@ -136,9 +136,7 @@ export class AuthService {
     if (!token && !refreshToken) {
       this.clearAuthData();
       this.userSignal.set(null);
-      console.log('No access or refresh token found, user is not authenticated', scheduled([false], asyncScheduler));
       return scheduled([false], asyncScheduler);
-      // return of(false);
     }
 
     // Si hay token de acceso, valida con el backend

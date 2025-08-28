@@ -1,0 +1,73 @@
+@if (internalId) {
+  <p-table [value]="items" sortField="internalId">
+    <ng-template #header>
+      <tr>
+        @for (col of columns; track col.header) {
+          <th>{{ col.header }}</th>
+        }
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr>
+        @for (col of columns; track col.header) {
+          <td>
+            @if (col.field === 'isActive') {
+              @if (item[col.field]) {
+                <span class="text-green-600 font-bold">Sí</span>
+              } @else {
+                <span class="text-red-500 font-medium">No</span>
+              }
+            } @else {
+              {{ item[col.field] }}
+            }
+          </td>
+        }
+        <td>
+          @for (action of actions; track $index) {
+            <p-button
+              [icon]="action.icon"
+              (click)="action.handler(item)"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+            />
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+} @else {
+  <p-table [value]="items" sortField="id">
+    <ng-template #header>
+      <tr>
+        <th>#</th>
+        <!-- Nueva columna para el índice -->
+        @for (col of columns; track col.header) {
+          <th>{{ col.header }}</th>
+        }
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <!-- Muestra el número de fila iniciando en 1 -->
+        @for (col of columns; track col.header) {
+          <td>{{ item[col.field] }}</td>
+        }
+        <td>
+          @for (action of actions; track $index) {
+            <p-button
+              [icon]="action.icon"
+              (click)="action.handler(item)"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+            />
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+}

@@ -7,8 +7,8 @@ import { ENV } from '@env/environment.dev';
 })
 
 export class GalleryService {
-  private readonly apiUrl = `${ENV.API_URL}/gallery`
-  private http = inject(HttpClient)
+  private readonly apiUrl = `${ENV.API_URL}/gallery`;
+  private http = inject(HttpClient);
 
   getAllGalleries() {
     return this.http.get(`${this.apiUrl}`);

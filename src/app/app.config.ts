@@ -13,9 +13,12 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withViewTransitions()),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch(), withInterceptors([
-      authInterceptor
-    ])),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        authInterceptor
+      ])
+    ),
     HttpClient,
     providePrimeNG({
       theme: {
