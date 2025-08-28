@@ -1,32 +1,35 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Supplier } from '@core/models/interfaces/supplier.model';
 import { SupplierService } from '@core/services/suppliers/supplier-service';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ButtonModule } from "primeng/button";
-import { RouterOutlet } from '@angular/router';
-
+import { CrudTable } from "@shared/components/crud-table/crud-table";
+import { CrudForm } from "@shared/components/crud-form/crud-form";
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ButtonModule } from "primeng/button";
 import { Dialog } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormModulesImport } from '@shared/modules/import-form';
-import { FormBuilder } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { IftaLabelModule } from 'primeng/iftalabel';
+import { MessageToast } from '@shared/components/message-toast/message-toast';
 
 @Component({
   selector: 'app-suppliers',
-  imports: [CardModule, TableModule, SkeletonModule, ButtonModule,
-    ToastModule, ToolbarModule, ConfirmDialog, Dialog, InputTextModule,
-    FormModulesImport, SelectButtonModule, IftaLabelModule
-  ],
   templateUrl: './suppliers.html',
   styleUrl: './suppliers.css',
-  providers: [SupplierService, MessageService, ConfirmationService]
+  providers: [SupplierService, MessageService, ConfirmationService],
+  imports: [
+    CrudTable,
+    CrudForm,
+    ToastModule,
+    ToolbarModule,
+    ButtonModule,
+    Dialog,
+    SelectButtonModule,
+    ConfirmDialog,
+    MessageToast
+  ],
 })
 export class Suppliers {
   private supplierService = inject(SupplierService);
@@ -35,16 +38,17 @@ export class Suppliers {
 
   supplierDialog: boolean = false;
   suppliers!: Supplier[];
-  selectedSupplier: Supplier = this.getEmptySupplier();
   submitted: boolean = false;
+  keyInternalId: boolean = true;
 
   activeOptions: any[] = [
     { label: 'Sí', value: true },
     { label: 'No', value: false }
   ];
-  value: boolean = true;
 
-  supplierForm = this.fb.group({
+  @ViewChild('toast') toast!: MessageToast;
+
+  supplierForm: FormGroup = this.fb.group({
     id: [''],
     internalId: [0],
     socialReason: [''],
@@ -54,6 +58,30 @@ export class Suppliers {
     email: [''],
     isActive: [true]
   })
+
+  columns = [
+    { field: 'internalId', header: 'ID' },
+    { field: 'socialReason', header: 'Razón Social' },
+    { field: 'ruc', header: 'RUC' },
+    { field: 'contactName', header: 'Representante' },
+    { field: 'phone', header: 'Celular' },
+    { field: 'email', header: 'Email' },
+    { field: 'isActive', header: 'Activo' }
+  ];
+
+  formFields = [
+    { name: 'socialReason', label: 'Razón Social', class: 'w-72' },
+    { name: 'ruc', label: 'RUC', class: 'w-40' },
+    { name: 'contactName', label: 'Representante', class: 'w-72' },
+    { name: 'phone', label: 'Celular', class: 'w-40' },
+    { name: 'email', label: 'Email', type: 'email', class: 'w-72' },
+    { name: 'isActive', label: 'Activo', type: 'selectbutton', options: this.activeOptions }
+  ];
+
+  actions = [
+    { icon: 'pi pi-pencil', handler: (item: Supplier) => this.editSupplier(item) }
+    // { icon: 'pi pi-trash', handler: (item: Supplier) => this.deleteSupplier(item) }
+  ];
 
   ngOnInit() {
 
@@ -70,8 +98,7 @@ export class Suppliers {
   }
 
   editSupplier(supplier: Supplier) {
-    this.selectedSupplier = { ...supplier };
-    // Map supplier to form values, converting id to number if needed
+
     this.supplierForm.patchValue({
       id: supplier.id ? String(supplier.id) : '',
       internalId: Number(supplier.internalId) ?? 0,
@@ -80,7 +107,7 @@ export class Suppliers {
       contactName: supplier.contactName ?? '',
       phone: supplier.phone ?? '',
       email: supplier.email ?? '',
-      isActive: supplier.isActive ?? true
+      isActive: supplier.isActive
     });
     this.supplierDialog = true;
   }
@@ -98,52 +125,52 @@ export class Suppliers {
     const { internalId, ...formValue } = supplier;
 
     if (!supplier.id || supplier.id === '') {
-      // Crear nuevo proveedor
-      const newSupplier: Supplier = {
-        ...formValue,
-      } as Supplier;
-      this.supplierService.createSupplier(newSupplier).subscribe(() => {
-        this.ngOnInit();
+      const newSupplier: Supplier = { ...formValue } as Supplier;
+      this.supplierService.createSupplier(newSupplier).subscribe({
+        next: () => {
+          this.ngOnInit();
+          this.showSuccess('Proveedor creado correctamente');
+        },
+        error: (e) => {
+          this.showError(e.error?.message || 'No se pudo crear el proveedor');
+        }
       });
     } else {
-      // Editar proveedor existente
-      const updatedSupplier: Supplier = {
-        ...formValue,
-        id: supplier.id ?? undefined
-      } as Supplier;
-      this.supplierService.updateSupplierById(supplier.id, updatedSupplier).subscribe(() => {
-        this.ngOnInit();
+      const updatedSupplier: Supplier = { ...formValue, id: supplier.id ?? undefined } as Supplier;
+      this.supplierService.updateSupplierById(supplier.id, updatedSupplier).subscribe({
+        next: () => {
+          this.ngOnInit();
+          this.showSuccess('Proveedor actualizado correctamente');
+        },
+        error: (e) => {
+          this.showError(e.error?.message || 'No se pudo actualizar el proveedor');
+        }
       });
     }
 
     this.hideDialog();
   }
-  // saveSupplier() {
 
-  //   const { internalId, ...formValue } = this.supplierForm.value;
-  //   const id = formValue.id ?? '';
-  //   // Ensure id is never null
-  //   const supplier: Supplier = {
-  //     ...formValue,
-  //     id: formValue.id ?? undefined
-  //   } as Supplier;
-
-
-  //   this.supplierService.updateSupplierById(id, supplier).subscribe(() => {
-  //     this.ngOnInit(); // Refresh the supplier list
-  //   });
-  //   this.hideDialog();
-  // }
-
-  private getEmptySupplier(): Supplier {
-    return {
-      internalId: 0,
-      socialReason: '',
-      ruc: '',
-      contactName: '',
-      phone: '',
-      email: '',
-      isActive: false
-    };
+  showSuccess(message: string) {
+    this.toast.clear();
+    this.toast.severity = 'success';
+    this.toast.summary = 'Éxito';
+    this.toast.position = 'bottom-right';
+    this.toast.detail = message;
+    this.toast.life = 2000;
+    this.toast.show();
+    this.cdr.detectChanges();
   }
+
+  showError(message: string) {
+    this.toast.clear();
+    this.toast.severity = 'error';
+    this.toast.summary = 'Error';
+    this.toast.position = 'bottom-center'
+    this.toast.detail = message;
+    this.toast.sticky = true;
+    this.toast.show();
+    this.cdr.detectChanges();
+  }
+
 }
