@@ -1,0 +1,45 @@
+<form [formGroup]="form">
+  <div class="flex flex-wrap gap-4">
+    @for (field of fields; track $index) {
+      @if (field.type !== 'selectbutton' && field.type !== 'select-enum') {
+        <p-iftalabel>
+          <input
+            pInputText
+            [id]="field.name"
+            [class]="field.class"
+            [type]="field.type || 'text'"
+            [formControlName]="field.name"
+          />
+          <label for="{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
+      @if (field.type === 'selectbutton') {
+        <div class="flex items-center gap-3">
+          <label for="{{ field.name }}">Activo</label>
+          <p-selectbutton
+            [options]="field.options"
+            formControlName="{{ field.name }}"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+      }
+      @if (field.type === 'select-enum') {
+        <p-iftalabel [class]="field.class">
+          <p-select
+            [options]="field.options"
+            formControlName="{{ field.name }}"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
+          <label for="dd-{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
+    }
+  </div>
+  <div class="flex gap-2 mt-4">
+    <p-button label="Cancelar" icon="pi pi-times" text (click)="cancel.emit()" />
+    <p-button label="Guardar" icon="pi pi-check" (click)="save.emit()" />
+  </div>
+</form>
