@@ -1,1 +1,35 @@
-<p>clients works!</p>
+<div class="flex flex-col justify-center m-6">
+  <h2 class="text-2xl font-bold mb-4">Gestión de Clientes</h2>
+  <p-toolbar class="mb-6 w-full">
+    <ng-template #start>
+      <p-button
+        size="small"
+        label="Nuevo Cliente"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="createNewClient()"
+      />
+    </ng-template>
+  </p-toolbar>
+  <crud-table
+    [items]="clients"
+    [columns]="columns"
+    [actions]="actions"
+    (edit)="editClient($event)"
+    [internalId]="keyInternalId"
+  ></crud-table>
+  <p-dialog
+    [(visible)]="clientDialog"
+    [style]="{ width: '600px' }"
+    header="Detalles del Cliente"
+    [modal]="true"
+  >
+    <crud-form
+      [form]="clientForm"
+      [fields]="formFields"
+      (save)="saveClient()"
+      (cancel)="hideDialog()"
+    ></crud-form>
+  </p-dialog>
+</div>
+<app-message-toast #toast></app-message-toast>

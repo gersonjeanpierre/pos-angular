@@ -6,12 +6,12 @@ import { authGuard } from '@core/guards/auth/auth-guard';
 import { activeSessionGuard } from '@core/guards/auth/active-session-guard';
 import { roleGuard } from '@core/guards/auth/role-guard';
 import { UserRole } from '@core/enums/user-role.enum';
-import { Inventory } from '@features/inventory/inventory';
-import { AccessDenied } from '@features/access-denied/access-denied';
-import { Sales } from '@features/sales/sales';
-import { Clients } from '@features/clients/clients';
-import { Reports } from '@features/reports/reports';
-import { Suppliers } from '@features/suppliers/suppliers';
+import { Inventory } from '@pages/inventory/inventory';
+import { AccessDenied } from '@pages/access-denied/access-denied';
+import { Sales } from '@pages/sales/sales';
+import { Clients } from '@pages/clients/clients';
+import { Reports } from '@pages/reports/reports';
+import { Suppliers } from '@pages/suppliers/suppliers';
 
 export const routes: Routes = [
   {
