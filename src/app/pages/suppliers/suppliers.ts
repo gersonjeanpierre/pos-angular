@@ -1,33 +1,25 @@
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Supplier } from '@core/models/interfaces/supplier.model';
 import { SupplierService } from '@core/services/suppliers/supplier-service';
 import { CrudTable } from "@shared/components/crud-table/crud-table";
 import { CrudForm } from "@shared/components/crud-form/crud-form";
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from "primeng/button";
 import { Dialog } from 'primeng/dialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
-
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { MessageToast } from '@shared/components/message-toast/message-toast';
 
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.html',
   styleUrl: './suppliers.css',
-  providers: [SupplierService, MessageService, ConfirmationService],
+  providers: [SupplierService],
   imports: [
     CrudTable,
     CrudForm,
-    ToastModule,
     ToolbarModule,
     ButtonModule,
     Dialog,
-    SelectButtonModule,
-    ConfirmDialog,
     MessageToast
   ],
 })
