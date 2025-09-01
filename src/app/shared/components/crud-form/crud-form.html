@@ -1,7 +1,11 @@
 <form [formGroup]="form">
   <div class="flex flex-wrap gap-4">
     @for (field of fields; track $index) {
-      @if (field.type !== 'selectbutton' && field.type !== 'select-enum') {
+      @if (
+        field.type !== 'selectbutton' &&
+        field.type !== 'select-enum' &&
+        field.type !== 'select-group'
+      ) {
         <p-iftalabel>
           <input
             pInputText
@@ -34,6 +38,27 @@
             class="w-full"
           />
           <label for="dd-{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
+      @if (field.type === 'select-group') {
+        <p-iftalabel [class]="field.class">
+          <p-select
+            [options]="field.optionsSelect"
+            [group]="true"
+            formControlName="{{ field.name }}"
+            placeholder="Selecciona el Stand"
+            optionLabel="label"
+            optionValue="value"
+            inputId="{{ field.name }}"
+            class="w-full"
+          >
+            <ng-template let-group #group>
+              <div class="flex items-center">
+                <span>{{ group.label }}</span>
+              </div>
+            </ng-template>
+          </p-select>
+          <label for="{{ field.name }}">{{ field.label }}</label>
         </p-iftalabel>
       }
     }

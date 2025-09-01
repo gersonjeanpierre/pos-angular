@@ -12,6 +12,8 @@ import { Sales } from '@pages/sales/sales';
 import { Clients } from '@pages/clients/clients';
 import { Reports } from '@pages/reports/reports';
 import { Suppliers } from '@pages/suppliers/suppliers';
+import { Movements } from '@pages/inventory/movements/movements';
+import { Materials } from '@pages/inventory/materials/materials';
 
 export const routes: Routes = [
   {
@@ -52,7 +54,21 @@ export const routes: Routes = [
         path: 'inventario',
         component: Inventory,
         canActivate: [roleGuard],
-        data: { roles: [UserRole.ADMIN, UserRole.MANAGER] }
+        data: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
+        children: [
+          {
+            path: 'movimientos',
+            component: Movements,
+            canActivate: [roleGuard],
+            data: { roles: [UserRole.ADMIN, UserRole.MANAGER] }
+          },
+          {
+            path: 'materiales',
+            component: Materials,
+            canActivate: [roleGuard],
+            data: { roles: [UserRole.ADMIN, UserRole.MANAGER] }
+          }
+        ]
       },
       {
         path: 'proveedores',

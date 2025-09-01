@@ -1,1 +1,19 @@
-<p>inventory works!</p>
+<div class="flex flex-col justify-center mx-6 my-3">
+  <!-- <h2 class="text-2xl font-bold mb-4">Gestión de Inventario</h2> -->
+  <p-menubar [model]="items" class="shadow-lg">
+    <ng-template #item let-item>
+      <a
+        pRipple
+        class="p-menubar-item-link"
+        [routerLink]="item.routerLink"
+        routerLinkActive="active-menu-item"
+        [class.disabled]="router.url === item.routerLink"
+        [attr.tabindex]="router.url === item.routerLink ? -1 : 0"
+        [attr.aria-disabled]="router.url === item.routerLink ? 'true' : null"
+      >
+        <span>{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </p-menubar>
+  <router-outlet></router-outlet>
+</div>

@@ -1,1 +1,36 @@
-<p>materials works!</p>
+<div class="mt-5">
+  <p-toolbar class="mb-6 w-full">
+    <ng-template #start>
+      <p-button
+        size="small"
+        label="Nuevo Material"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="createNewMaterial()"
+      />
+    </ng-template>
+  </p-toolbar>
+  <crud-table
+    [items]="materials"
+    [columns]="columns"
+    [actions]="actions"
+    (edit)="editMaterial($event)"
+    (delete)="deleteMaterial($event)"
+  ></crud-table>
+  <p-dialog
+    [(visible)]="materialDialog"
+    [style]="{ width: '550px' }"
+    header="Detalles del Material"
+    [modal]="true"
+  >
+    <crud-form
+      [form]="materialForm"
+      [fields]="formFields"
+      (save)="saveMaterial()"
+      (cancel)="hideDialog()"
+    >
+    </crud-form>
+    <ng-template #footer></ng-template>
+  </p-dialog>
+  <app-message-toast #toast></app-message-toast>
+</div>

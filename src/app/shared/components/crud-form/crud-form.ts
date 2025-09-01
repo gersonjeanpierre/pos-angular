@@ -28,6 +28,14 @@ export class CrudForm {
     type?: string;
     class?: string;
     options?: { label: string; value: any; }[];
+    optionsSelect?: {
+      label: string,
+      value?: string,
+      id?: string
+      items: {
+        label: string, value: any
+      }[]
+    }[];
   }[] = [];
   @Output() save = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
