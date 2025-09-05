@@ -11,7 +11,7 @@ export class Products {
   private http = inject(HttpClient);
 
   constructor() {
-    this.getProductAddons();
+    // this.getProductAddons();
   }
 
   getProductAddons() {
