@@ -10,14 +10,14 @@
   </ng-template>
   <ng-template #item let-item let-root="root">
     @if (item.visible) {
-    <p-toggleButton
-      [onLabel]="item.label"
-      [offLabel]="item.label"
-      [onIcon]="item.icon"
-      [offIcon]="item.icon"
-      [ngModel]="router.url === item.routerLink"
-      (ngModelChange)="onMenuItemToggle(item.routerLink!)"
-    />
+      <p-toggleButton
+        [onLabel]="item.label"
+        [offLabel]="item.label"
+        [onIcon]="item.icon"
+        [offIcon]="item.icon"
+        [ngModel]="router.url === item.routerLink"
+        (ngModelChange)="onMenuItemToggle(item.routerLink!)"
+      />
     }
   </ng-template>
   <ng-template #end>

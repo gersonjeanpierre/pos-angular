@@ -1,0 +1,68 @@
+<div>
+  <h2>Laser Color Veloz</h2>
+  <p>
+    Diseñador: <span>{{ dataSale.designer }}</span>
+  </p>
+  <p>
+    Número de Ticket: <span>{{ dataSale.correlative }}</span>
+  </p>
+  <p>
+    Fecha: <span>{{ dataSale.date | date: 'short' }}</span>
+  </p>
+  <p>
+    Método de Pago: <span>{{ dataSale.paymentMethod }}</span>
+  </p>
+  <p>
+    Cliente: <span>{{ dataSale.client.name }}</span>
+  </p>
+  <div class="ticket-items">
+    <div class="ticket-item header">
+      <span class="item-name">Producto</span>
+      <span class="item-quantity">Cant.</span>
+      <span class="item-price">Precio</span>
+      <span class="item-total">Total</span>
+    </div>
+  </div>
+  <div class="ticket-items">
+    <div class="ticket-item" *ngFor="let item of dataSale.items">
+      <span class="item-name">{{ item.description }}</span>
+      <span class="item-quantity">{{ item.quantity }}</span>
+      <span class="item-price">{{ item.price | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+      <span class="item-total">{{
+        item.quantity * item.price | currency: 'S/.' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+  </div>
+
+  <div class="ticket-summary">
+    <div class="summary-row">
+      <span>Total:</span>
+      <span>{{ dataSale.total | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Descuento:</span>
+      <span>{{ dataSale.discount | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+    <div class="summary-row total">
+      <span>Impuesto (18%):</span>
+      <span>{{ dataSale.tax | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Precio Final:</span>
+      <span>{{ dataSale.finalTotal | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Adelanto:</span>
+      <span>{{ dataSale.advancePayment | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Saldo:</span>
+      <span>{{ dataSale.shortage | currency: 'S/.' : 'symbol' : '1.2-2' }}</span>
+    </div>
+  </div>
+  <div class="thank-you">
+    <p>¡Gracias por su compra!</p>
+    <p>Vuelva pronto.</p>
+    <p>Fecha de impresión: {{ dataSale.printDate | date: 'short' }}</p>
+  </div>
+</div>
